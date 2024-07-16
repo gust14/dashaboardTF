@@ -104,4 +104,4 @@ with col1:
                 st.error("Nenhum dado retornado para os parâmetros fornecidos.")
     else:
         # Exibir mensagem de instrução se o botão não foi clicado
-        st.info("Selecione os parâmetros e clique em 'Buscar' para visualizar as informações de Recursos Transferidos")
+        st.info("Selecione os parâmetros e clique em 'Buscar' para visualizar as informações de Recursos Transferidos para um estado")
