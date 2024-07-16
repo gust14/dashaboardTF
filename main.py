@@ -3,7 +3,7 @@ import time
 
 from config import set_config
 from data_fetcher import fetch_data
-from data_processor import process_data, create_table
+from data_processor import process_data, create_table, create_full_table
 from data_visualizer import gerar_grafico_pizza
 from exporter import convert_df
 
@@ -68,16 +68,6 @@ with col1:
                     st.write(f"Estado de {uf} recebeu os seguintes valores:")
                     st.write(table_df.to_html(index=False, justify='center'), unsafe_allow_html=True)
 
-                    # Botão para exportar tabela
-                    csv = convert_df(table_df)
-
-                    st.download_button(
-                        "Exportar tabela",
-                        csv,
-                        f"recursos_transferidos_{uf}.csv",
-                        "text/csv",
-                        False
-                    )
 
                     # Informativo
                     st.write(" ")  
@@ -85,8 +75,14 @@ with col1:
                     st.write(f"Estado de {uf} recebeu o valor para Educação de: <span style='color: #85EA2D'>R${educacao_valor:,.2f}</span> 📚", unsafe_allow_html=True)
                     st.write(f"Estado de {uf} recebeu o valor para Segurança de: <span style='color: #85EA2D'>R${defesa_valor:,.2f}</span> 💪", unsafe_allow_html=True)
 
-                    # Mostrar o gráfico de pizza no Streamlit
+                    # Mostrar gráficos
+                    st.write("### Gráfico de Pizza")
                     st.pyplot(gerar_grafico_pizza(table_df))
+                    
+                    # Exibir tabela completa dos valores retornados
+                    st.write("### Tabela Completa dos Valores Retornados")
+                    create_full_table(data)
+
 
             else:
                 st.error("Nenhum dado retornado para os parâmetros fornecidos.")
