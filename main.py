@@ -1,7 +1,14 @@
 import streamlit as st
-import requests
-import pandas as pd
 import time
+
+from config import set_config
+from data_fetcher import fetch_data
+from data_processor import process_data, create_table
+from data_visualizer import gerar_grafico_pizza
+from exporter import convert_df
+
+# Configurações padrão
+set_config()
 
 # Título do dashboard
 st.title("Dashboard - Recursos Transferidos")
@@ -36,54 +43,53 @@ with col1:
                 "mesAnoInicio": mes_ano_inicio,
                 "mesAnoFim": mes_ano_fim,
                 "uf": uf,
-                "pagina": 1  # página sempre como 1
+                "pagina": 1  # página inicial
             }
 
             # Headers para a API
             headers = {
-                "accept": "*/*",
+                "accept": "application/json",
                 "chave-api-dados": "3cecdb8d3b0aac90c2a30386cfcb2c3c"
             }
 
-            # Requisição GET para a API
-            response = requests.get(api_url, params=params, headers=headers)
+            # Buscar todos os dados
+            data = fetch_data(api_url, params, headers)
 
-            # Verificar se a resposta foi bem-sucedida
-            if response.status_code == 200:
-                # Converter a resposta em JSON
-                data = response.json()
-
+            # Verificar se há dados retornados
+            if data:
                 # Processar os dados
-                df = pd.DataFrame(data)
+                saude_valor, educacao_valor, defesa_valor = process_data(data)
 
-                # Filtrar e agrupar os dados
-                orgaos_de_interesse = ['Ministério da Saúde', 'Ministério da Educação', 'Ministério da Defesa']
-                df_filtrado = df[df['nomeOrgaoSuperior'].isin(orgaos_de_interesse)]
-
-                # Inicializar valores totais
-                saude_valor = 0
-                educacao_valor = 0
-                defesa_valor = 0
-
-                # Somar valores para cada orgão de interesse
-                for orgao in orgaos_de_interesse:
-                    valores_orgao = df_filtrado[df_filtrado['nomeOrgaoSuperior'] == orgao]['valor']
-                    if not valores_orgao.empty:
-                        if orgao == 'Ministério da Saúde':
-                            saude_valor = valores_orgao.sum()
-                        elif orgao == 'Ministério da Educação':
-                            educacao_valor = valores_orgao.sum()
-                        elif orgao == 'Ministério da Defesa':
-                            defesa_valor = valores_orgao.sum()
+                table_df = create_table(saude_valor, educacao_valor, defesa_valor)
 
                 # Exibir resultados
-                col2.write(" ")  
-                col2.write(f"Estado de {uf} recebeu o valor para Saúde de: <span style='color: #85EA2D'>R${saude_valor:,.2f}</span> 💸", unsafe_allow_html=True)
-                col2.write(f"Estado de {uf} recebeu o valor para Educação de: <span style='color: #85EA2D'>R${educacao_valor:,.2f}</span> 📚", unsafe_allow_html=True)
-                col2.write(f"Estado de {uf} recebeu o valor para Segurança de: <span style='color: #85EA2D'>R${defesa_valor:,.2f}</span> 💪", unsafe_allow_html=True)
+                with col2:
+                    st.write(" ")
+                    st.write(f"Estado de {uf} recebeu os seguintes valores:")
+                    st.write(table_df.to_html(index=False, justify='center'), unsafe_allow_html=True)
+
+                    # Botão para exportar tabela
+                    csv = convert_df(table_df)
+
+                    st.download_button(
+                        "Exportar tabela",
+                        csv,
+                        f"recursos_transferidos_{uf}.csv",
+                        "text/csv",
+                        False
+                    )
+
+                    # Informativo
+                    st.write(" ")  
+                    st.write(f"Estado de {uf} recebeu o valor para Saúde de: <span style='color: #85EA2D'>R${saude_valor:,.2f}</span> 💸", unsafe_allow_html=True)
+                    st.write(f"Estado de {uf} recebeu o valor para Educação de: <span style='color: #85EA2D'>R${educacao_valor:,.2f}</span> 📚", unsafe_allow_html=True)
+                    st.write(f"Estado de {uf} recebeu o valor para Segurança de: <span style='color: #85EA2D'>R${defesa_valor:,.2f}</span> 💪", unsafe_allow_html=True)
+
+                    # Mostrar o gráfico de pizza no Streamlit
+                    st.pyplot(gerar_grafico_pizza(table_df))
+
             else:
-                # Exibir erro se a resposta não foi bem-sucedida
-                st.error("Erro ao consultar a API")
+                st.error("Nenhum dado retornado para os parâmetros fornecidos.")
     else:
         # Exibir mensagem de instrução se o botão não foi clicado
         st.info("Selecione os parâmetros e clique em 'Buscar' para visualizar as informações de Recursos Transferidos")
