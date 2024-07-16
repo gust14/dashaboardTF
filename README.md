@@ -84,6 +84,7 @@ Funções para exportar os dados processados em formato CSV.
 5. Acompanhe o progresso da consulta na barra de progresso.
 6. Veja os resultados na tabela e no gráfico de pizza.
 7. Exporte os dados em formato CSV se necessário.
+8. Acessar site: [Site](https://dashaboardtf.streamlit.app/)
 
 ## Contribuição
 
