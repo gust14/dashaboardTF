@@ -65,7 +65,7 @@ Contém funções assíncronas para buscar dados da API, utilizando `aiohttp` pa
 
 ### `data_processor.py`
 
-Processa e filtra os dados retornados da API, criando uma tabela com os valores recebidos por cada ministério.
+Processa e filtra os dados retornados da API, criando uma tabela com os valores recebidos por cada ministério. Além de retornar todos os dados em uma tabela, sendo possível exportar no formato CSV.
 
 ### `data_visualizer.py`
 
@@ -84,6 +84,7 @@ Funções para exportar os dados processados em formato CSV.
 5. Acompanhe o progresso da consulta na barra de progresso.
 6. Veja os resultados na tabela e no gráfico de pizza.
 7. Exporte os dados em formato CSV se necessário.
+8. Acessar site: [Dashboard TF](https://dashaboardtf.streamlit.app/)
 
 ## Contribuição
 
@@ -100,4 +101,10 @@ Para dúvidas ou sugestões, entre em contato:
 - Nome: Ghu Solf
 - Email: gusttavosolf@gmail.com
 - GitHub: [gust14](https://github.com/gust14)
+
+## Projeto
+
+Esse projeto foi desenvolvido para disciplina de Fábrica de
+Software da Universidade de Santa Cruz do Sul. Integrantes: Luis Gustavo, Matheus Barreto, Anna Santos
+
 

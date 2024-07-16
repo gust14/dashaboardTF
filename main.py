@@ -66,7 +66,23 @@ with col1:
                 with col2:
                     st.write(" ")
                     st.write(f"Estado de {uf} recebeu os seguintes valores:")
-                    st.write(table_df.to_html(index=False, justify='center'), unsafe_allow_html=True)
+
+                    # Formatar valores como moeda para exibição
+                    table_df_formatted = table_df.copy()
+                    table_df_formatted['Valor'] = table_df_formatted['Valor'].apply(lambda x: f'R${x:,.2f}')
+
+                    st.write(table_df_formatted.to_html(index=False, justify='center'), unsafe_allow_html=True)
+
+                    # Botão para exportar tabela
+                    csv = convert_df(table_df)
+
+                    st.download_button(
+                        "Exportar tabela",
+                        csv,
+                        "recursos_transferidos_{}.csv".format(uf),
+                        "text/csv",
+                        False
+                    )
 
 
                     # Informativo
