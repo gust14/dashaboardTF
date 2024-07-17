@@ -1,10 +1,21 @@
 # Dashboard - Recursos Transferidos
 
-Este projeto é um dashboard interativo para visualização de recursos transferidos, desenvolvido com Streamlit. O objetivo é facilitar a visualização de dados financeiros recebidos por diferentes estados do Brasil.
+Este projeto é um dashboard interativo para visualização de recursos transferidos, desenvolvido com Python e Streamlit. O objetivo é facilitar a visualização de dados financeiros recebidos por diferentes estados do Brasil com base no Orgão Superior.
+
+Nesse momento estamos retornando o valor total tranferido para o Ministério da Saúde, Ministério da Educação e Ministério da Defesa. 
+
+Também estamos organizando todos os dados refernete ao perido escolhido pelo usuario onde mesmo pode saber todos os dados retornados e caso for necessario exportar no formato CSV.
+
+## API de Dados | Portal da Transparência do Governo Federal
+Para consultar os dados precisamos criar um chave de API. Com ela, é possível ter um serviço de consulta direta aos dados do Portal da Transparência sem precisar navegar pelo site ou utilizar robôs para a obtenção das informações de forma automática. Os dados disponíveis são os mesmos apresentados em tela, com a flexibilidade característica das APIs.
+
+Para fazer uso da API, deve-se realizar o cadastro de um e-mail em [API de dados - Cadastrar emial](http://portaldatransparencia.gov.br/api-de-dados/cadastrar-email) 
+
+Através do e-mail cadastrado, você receberá um token, que deverá ser usado nas suas consultas via API.
 
 ## Funcionalidades
 
-- Escolha de período de tempo (mês/ano de início e fim).
+- Escolha de período de tempo (mês/ano de início e fim). 
 - Seleção de Unidade Federativa (UF).
 - Consulta de dados de recursos transferidos de diferentes ministérios.
 - Exibição de tabela com os valores recebidos por cada ministério.
@@ -24,10 +35,10 @@ Este projeto é um dashboard interativo para visualização de recursos transfer
 
 O projeto está organizado nos seguintes arquivos:
 
-- `main.py`: Arquivo principal que inicializa o dashboard e gerencia a interface do usuário.
-- `config.py`: Configurações do projeto, incluindo layout do Streamlit.
-- `data_fetcher.py`: Funções para buscar dados da API de forma assíncrona.
-- `data_processor.py`: Funções para processar e filtrar os dados.
+- `main.py`: Arquivo principal que inicializa o dashboard e gerencia a interface do usuário. O usuario pode fazer a consulta utilizando os filtros. Ao clicar em buscar fazemos a consulta para coletar os dados.
+- `config.py`: Configurações do projeto, incluindo layout do Streamlit. Essa função é mais para determinar um titulo e um icone do site. Mas é possível definir outras configurações.
+- `data_fetcher.py`: Funções para buscar dados da API de forma assíncrona. Essa função faz a coleta dos dados.
+- `data_processor.py`: Funções para processar e filtrar os dados. 
 - `data_visualizer.py`: Funções para gerar gráficos baseados nos dados.
 - `exporter.py`: Funções para exportar dados em formato CSV.
 

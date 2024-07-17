@@ -45,7 +45,6 @@ with col1:
                 "uf": uf,
                 "pagina": 1  # página inicial
             }
-
             # Headers para a API
             headers = {
                 "accept": "application/json",
